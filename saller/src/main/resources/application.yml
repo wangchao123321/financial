@@ -1,0 +1,11 @@
+server:
+  servlet:
+    context-path: /seller
+  port: 8082
+
+
+rpc.manager.url: http://localhost:8081/manager/
+spring:
+  cache:
+    type: hazelcast
+
