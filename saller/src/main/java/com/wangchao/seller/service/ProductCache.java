@@ -12,14 +12,16 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.CachePut;
 import org.springframework.cache.annotation.Cacheable;
+import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+@Component
 public class ProductCache {
 
-    private static Logger logger = LoggerFactory.getLogger(ProductRpcService.class);
+    private static Logger logger = LoggerFactory.getLogger(ProductCache.class);
 
     public static final String CACHE_NAME = "wangchao_product" ;
 
@@ -68,6 +70,7 @@ public class ProductCache {
         List<String> status = new ArrayList<>();
         status.add(ProductStatus.IN_SELL.name());
         req.setStatusList(status);
+
         logger.info("rpc查询全部产品请求: {}", req);
         List<Product> result = productRpc.query(req);
         logger.info("rpc查询全部产品结果: {}", result);

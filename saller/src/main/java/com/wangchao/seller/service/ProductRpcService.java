@@ -2,6 +2,7 @@ package com.wangchao.seller.service;
 
 import com.wangchao.api.ProductRpc;
 import com.wangchao.api.domain.ProductRpcReq;
+import com.wangchao.api.events.ProductStatusEvent;
 import com.wangchao.entity.Product;
 import com.wangchao.entity.enums.ProductStatus;
 import org.slf4j.Logger;
@@ -14,6 +15,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.jms.annotation.JmsListener;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -25,6 +27,8 @@ import java.util.List;
 public class ProductRpcService implements ApplicationListener<ContextRefreshedEvent> {
 
     private static Logger logger = LoggerFactory.getLogger(ProductRpcService.class);
+
+    static final String MQ_DESTINATION = "Consumer.cache.VirtualTopic.PRODUCT_STATUS";
 
     @Autowired
     private ProductRpc productRpc;
@@ -67,5 +71,14 @@ public class ProductRpcService implements ApplicationListener<ContextRefreshedEv
         products.forEach(product -> {
             productCache.putCache(product);
         });
+    }
+
+    @JmsListener(destination = MQ_DESTINATION)
+    public void updateCache(ProductStatusEvent event){
+        logger.info("recerve event: {}" + event);
+        productCache.removeCache(event.getId());
+        if(ProductStatus.IN_SELL.equals(event.getStatus())){
+            productCache.readCache(event.getId());
+        }
     }
 }
