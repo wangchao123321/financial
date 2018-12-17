@@ -90,18 +90,18 @@ public class DataAccessConfiguration {
                 .build();
     }
 
-    @Bean
-    @Primary
-    public PlatformTransactionManager primaryTransactionManager(@Qualifier("primaryEntityManagerFactory") LocalContainerEntityManagerFactoryBean primaryEntityManagerFactory) {
-        JpaTransactionManager transactionManager = new JpaTransactionManager(primaryEntityManagerFactory.getObject());
-        return transactionManager;
-    }
-
-    @Bean
-    public PlatformTransactionManager backupTransactionManager(@Qualifier("backupEntityManagerFactory") LocalContainerEntityManagerFactoryBean backupEntityManagerFactory) {
-        JpaTransactionManager transactionManager = new JpaTransactionManager(backupEntityManagerFactory.getObject());
-        return transactionManager;
-    }
+//    @Bean
+//    @Primary
+//    public PlatformTransactionManager primaryTransactionManager(@Qualifier("primaryEntityManagerFactory") LocalContainerEntityManagerFactoryBean primaryEntityManagerFactory) {
+//        JpaTransactionManager transactionManager = new JpaTransactionManager(primaryEntityManagerFactory.getObject());
+//        return transactionManager;
+//    }
+//
+//    @Bean
+//    public PlatformTransactionManager backupTransactionManager(@Qualifier("backupEntityManagerFactory") LocalContainerEntityManagerFactoryBean backupEntityManagerFactory) {
+//        JpaTransactionManager transactionManager = new JpaTransactionManager(backupEntityManagerFactory.getObject());
+//        return transactionManager;
+//    }
 
     // repository 扫描的时候，并不确定哪个先扫描，查看源代码
     @EnableJpaRepositories(basePackageClasses = OrderRepository.class,
@@ -112,7 +112,7 @@ public class DataAccessConfiguration {
 
     @EnableJpaRepositories(basePackageClasses = OrderRepository.class,
             entityManagerFactoryRef = "backupEntityManagerFactory",transactionManagerRef = "backupTransactionManager")
-    @RepositoryBeanNamePrefix("read")
+//    @RepositoryBeanNamePrefix("read")
     public class ReadConfiguration {
     }
 
