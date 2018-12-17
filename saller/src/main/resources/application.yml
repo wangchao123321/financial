@@ -6,6 +6,23 @@ server:
 
 rpc.manager.url: http://localhost:8081/manager/
 spring:
+  jackson:
+      date-format: yyyy-MM-dd HH:mm:ss.SSS
+      time-zone: GMT+8
+  datasource:
+      primary:
+          url: jdbc:mysql://140.143.163.212:3306/financial?useUnicode=true&characterEncoding=utf-8
+      backup:
+          url: jdbc:mysql://140.143.163.212:3306/financial-bak?useUnicode=true&characterEncoding=utf-8
+
+      username: root
+  #    url: jdbc:h2:mem:manager;DB_CLOSE_ON_EXIT=FALSE
+  jpa:
+      show-sql: true
   cache:
     type: hazelcast
+  activemq:
+    broker-url: tcp://localhost:61616
+    packages:
+      trust-all: true
 
